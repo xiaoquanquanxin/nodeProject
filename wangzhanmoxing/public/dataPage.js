@@ -16,25 +16,7 @@ $(document).ready(function () {
                     type: "get",
                     success: function (data, status) {
                         if (status === "success") {
-                            var tbody = teamTable.find("tbody");
-                            tbody.html("");
-                            data.forEach(function (t, index) {
-                                var tr = $("<tr></tr>");
-                                tr.data("id", t.id);
-                                tr.append($("<td>" + t.position + "</td>"));
-                                var td = $("<td></td>");
-                                td.append("<span>" + t.name + "</span>");
-                                if (t.isCaptain) {
-                                    td.append("<span class='badge'>队长</span>")
-                                }
-                                tr.append(td);
-                                tr.append($("<td>" + t.height + "</td>"));
-                                tr.append($("<td>" + t.weight + "</td>"));
-                                tr.append($("<td>" + t.yearsexp + "</td>"));
-                                tr.append($("<td>" + t.number + "</td>"));
-                                tbody.append(tr)
-                            });
-                            caption.find("span").html(caption.data("html"));
+                            renderData(data);
                             layer.close(index);
                         }
                     }
@@ -82,9 +64,10 @@ $(document).ready(function () {
                     data: data,
                     success: function (data, status) {
                         console.log(data, status);
-                        if (data.status === "success") {
+                        if (status === "success") {
                             layer.msg("添加成功", {time: 1000});
-                            layer.close(index)
+                            renderData(data);
+                            layer.close(index);
                         } else {
                             layer.msg(data.msg, {time: 1000, anim: 6});
                         }
@@ -184,5 +167,27 @@ $(document).ready(function () {
         $(this).addClass("warning").siblings().removeClass("warning");
         btnGroup.del.data("id", $(this).data("id"));
         btnGroup.mod.data("id", $(this).data("id"));
-    })
+    });
+
+    function renderData(data) {
+        var tbody = teamTable.find("tbody");
+        tbody.html("");
+        data.forEach(function (t, index) {
+            var tr = $("<tr></tr>");
+            tr.data("id", t.id);
+            tr.append($("<td>" + t.position + "</td>"));
+            var td = $("<td></td>");
+            td.append("<span>" + t.name + "</span>");
+            if (t.isCaptain) {
+                td.append("<span class='badge'>队长</span>")
+            }
+            tr.append(td);
+            tr.append($("<td>" + t.height + "</td>"));
+            tr.append($("<td>" + t.weight + "</td>"));
+            tr.append($("<td>" + t.yearsexp + "</td>"));
+            tr.append($("<td>" + t.number + "</td>"));
+            tbody.append(tr)
+        });
+        caption.find("span").html(caption.data("html"));
+    }
 });

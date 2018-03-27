@@ -58,22 +58,34 @@ dataPage.post("/add", function (req, res, next) {
         next()
     }
 }, function (req, res, next) {
+    MongoClient.connect(DB_CONN_STR, function (err, db) {
+        selectData(db, "teamList", {}, function (result) {
+            var id = result.length + 1;
+            db.close();
+            next(id);
+        });
+    })
+}, function (id, req, res, next) {
     var data = analyticP.conversionDataType(req.body);
     MongoClient.connect(DB_CONN_STR, function (err, db) {
-        var length;
-        selectData(db, "teamList", {}, function (result) {
-            length = result.length + 1;
-            addContinue();
+        data.id = id;
+        insertData(db, "teamList", data, function () {
+            db.close();
+            next()
         });
-
-        function addContinue() {
-            data.id = length;
-            insertData(db, "teamList", data, function (result) {
-                result.status = "success";
-                res.send(result);
-                db.close();
-            });
-        }
-    })
+    });
+}, function (req, res, next) {
+    var teamId = analyticP.conversionDataType(req.body).teamId;
+    var data = {teamId: teamId};
+    MongoClient.connect(DB_CONN_STR, function (err, db) {
+        selectData(db, "teamList", data, function (result) {
+            if (result.length) {
+                // console.log(result[0]);
+            }
+            result.status = "success";
+            res.send(result);
+            db.close();
+        });
+    });
 });
 module.exports = dataPage;
