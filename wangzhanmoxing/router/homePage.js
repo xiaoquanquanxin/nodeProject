@@ -9,7 +9,7 @@ var appIndex = __dirname.substring(0, dirNameIndex + 1);
 
 homePage.sendHomePage = function (req, res) {
     res.sendfile(appIndex + "index.html");
-    console.log("正确的index.html");
+    // console.log("正确的index.html");
 };
 
 homePage.get("/index.html", homePage.sendHomePage);
@@ -24,6 +24,8 @@ homePage.btn2 = function (req, res) {
     res.send("天才第二步")
 };
 homePage.get("/btn", [homePage.btn1, homePage.btn2]);
+
+
 
 
 module.exports = homePage;

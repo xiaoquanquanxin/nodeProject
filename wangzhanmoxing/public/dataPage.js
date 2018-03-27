@@ -12,7 +12,7 @@ $(document).ready(function () {
                 var val = caption.searchBtn.val();
                 console.log("球队id", val);
                 $.ajax({
-                    url: "search?teamId=" + val,
+                    url: App.getPortName() + "/search?teamId=" + val,
                     type: "get",
                     success: function (data, status) {
                         if (status === "success") {

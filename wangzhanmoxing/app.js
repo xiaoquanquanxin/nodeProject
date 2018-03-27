@@ -1,6 +1,5 @@
 //引入express模块
 var express = require("express");
-var url = require('url');
 var path = require('path');
 var bodyParser = require("body-parser");
 var routes = require("./router/index");
@@ -44,6 +43,7 @@ function clientErrorHandler(err, req, res, next) {
         next(err);
     }
 }
+
 function errorHandler(err, req, res, next) {
     res.status(500);
     res.send({error: err});

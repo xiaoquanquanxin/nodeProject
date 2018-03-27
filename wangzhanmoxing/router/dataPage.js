@@ -1,15 +1,15 @@
 var express = require("express");
-
+var url = require("url");
 var dataPage = express();
-
+var analyticP = require("./analyticParameter");
+var mongod = require("./mongod");
 
 var dirNameIndex = __dirname.lastIndexOf("\\");
 var appIndex = __dirname.substring(0, dirNameIndex + 1);
 
-
 dataPage.sendDataPage = function (req, res) {
     res.sendfile(appIndex + "dataPage.html");
-    console.log("正确的dataPage.html");
+    // console.log("正确的dataPage.html");
 };
 
 dataPage.get("/dataPage.html", dataPage.sendDataPage);
@@ -19,4 +19,61 @@ dataPage.get("/btn", function (req, res) {
     res.send("数据")
 });
 
+
+//  增删改查
+var insertData = mongod.insertData;
+var delData = mongod.delData;
+var updateData = mongod.updateData;
+var selectData = mongod.selectData;
+
+
+//创建mongodb客户端
+var MongoClient = require("mongodb").MongoClient;
+//连接串
+var DB_CONN_STR = "mongodb://127.0.0.1:27017/company";
+//  查询接口
+dataPage.get("/search", function (req, res) {
+    var arg = url.parse(req.url).query;
+    var obj = analyticP.urlGetParams(arg);
+    var data = analyticP.conversionDataType(obj);
+    console.log(data);
+    MongoClient.connect(DB_CONN_STR, function (err, db) {
+        selectData(db, "teamList", data, function (result) {
+            if (result.length) {
+                // console.log(result[0]);
+            }
+            res.send(result);
+            db.close();
+        });
+    });
+});
+//  添加一个人接口
+dataPage.post("/add", function (req, res, next) {
+    // console.log(  req.body);
+    if (req.body.name === "") {
+        res.send(analyticP.returnRequestError("球员姓名不能为空"));
+    } else if (req.body.position === "") {
+        res.send(analyticP.returnRequestError("球员位置不能为空"));
+    } else {
+        next()
+    }
+}, function (req, res, next) {
+    var data = analyticP.conversionDataType(req.body);
+    MongoClient.connect(DB_CONN_STR, function (err, db) {
+        var length;
+        selectData(db, "teamList", {}, function (result) {
+            length = result.length + 1;
+            addContinue();
+        });
+
+        function addContinue() {
+            data.id = length;
+            insertData(db, "teamList", data, function (result) {
+                result.status = "success";
+                res.send(result);
+                db.close();
+            });
+        }
+    })
+});
 module.exports = dataPage;
