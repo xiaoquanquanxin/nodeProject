@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>数据页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.eot">
+    <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.svg">
+    <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.ttf">
+    <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.woff">
+    <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.woff2">
+    <script type="text/javascript" src="/static/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/layui-v2.2.5/layui/layui.all.js"></script>
+    <link rel="stylesheet" href="/static/custom/css/header.css"/>
+</head>
+
+<body>
+<div class="header">
+    <div class="mask"></div>
+    <div class="container">
+        <ul class="row nav">
+            <li class="col-md-1 col-sm-1  col-xs-2 text-center"><a href="/homePage/index.html">首页</a></li>
+            <li class="col-md-1 col-sm-1  col-xs-2 text-center active"><a href="/dataPage/dataPage.html">数据</a></li>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <table class="table table-striped  table-bordered table-hover table-responsive " id="teamTable">
+        <caption class="modal-header text-right" id="caption"><span>波士顿凯尔特人队</span>
+            <button id="searchTeam" class="btn btn-info"><i class="glyphicon glyphicon-search"></i> 查找</button>
+        </caption>
+        <thead>
+        <tr>
+            <th>位置</th>
+            <th>姓名</th>
+            <th>身高<span class="badge">cm</span></th>
+            <th>体重<span class="badge">bls</span></th>
+            <th>球龄<span class="badge">years</span></th>
+            <th>号码</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="btn-group" id="actionBtnList">
+        <button id="add" class="btn  btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> 增加</button>
+        <button id="del" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> 删除</button>
+        <button id="mod" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i> 修改</button>
+    </div>
+    <button class="btn btn-lg" id="btn">按钮</button>
+    <div style="position: absolute;overflow: hidden;width:0;">
+        <form id="addForm" class="form-horizontal ">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="addForm1">位置</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="position" class="form-control" id="addForm1"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="addForm2">姓名</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="name" class="form-control" id="addForm2"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="addForm3">身高</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="height" class="form-control" id="addForm3"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="addForm4">体重</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="weight" class="form-control" id="addForm4"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="addForm5">球龄</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="yearsexp" class="form-control" id="addForm5"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="addForm6">号码</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="number" class="form-control" id="addForm6"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="searchForm" class="form-horizontal ">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="searchForm1">队名</label>
+                    <div class="col-sm-8">
+                        <select class="form-control " type="text" id="searchForm1"
+                                aria-describedby="inputSuccess3Status">
+                            <option value="1">波士顿凯尔特人队</option>
+                            <option value="2">多伦多猛龙队</option>
+                            <option value="3">费城76人队</option>
+                            <option value="4">纽约尼克斯队</option>
+                            <option value="5">布鲁克林篮网队</option>
+                            <option value="6">克利夫兰骑士队</option>
+                            <option value="7">底特律活塞队</option>
+                            <option value="8">密尔沃基雄鹿队</option>
+                            <option value="9">印第安纳步行者队</option>
+                            <option value="10">芝加哥公牛队</option>
+                            <option value="11">华盛顿奇才队</option>
+                            <option value="12">迈阿密热火队</option>
+                            <option value="13">奥兰多魔术队</option>
+                            <option value="14">夏洛特黄蜂队</option>
+                            <option value="15">亚特兰大老鹰队</option>
+                            <option value="16">丹佛掘金队</option>
+                            <option value="17">明尼苏达森林狼队</option>
+                            <option value="18">波特兰开拓者队</option>
+                            <option value="19">犹他爵士队</option>
+                            <option value="20">俄克拉荷马城雷霆队</option>
+                            <option value="21">金州勇士队</option>
+                            <option value="22">洛杉矶快船队</option>
+                            <option value="23">洛杉矶湖人队</option>
+                            <option value="24">菲尼克斯太阳队</option>
+                            <option value="25">萨克拉门托国王队</option>
+                            <option value="26">休斯敦火箭队</option>
+                            <option value="27">圣安东尼奥马刺队</option>
+                            <option value="28">新奥尔良鹈鹕队</option>
+                            <option value="29">孟菲斯灰熊队</option>
+                            <option value="30">达拉斯独行侠队</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="modificationForm" class="form-horizontal">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="modificationForm1">位置</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="position" class="form-control" id="modificationForm1"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="modificationForm2">姓名</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="name" class="form-control" id="modificationForm2"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="modificationForm3">身高</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="height" class="form-control" id="modificationForm3"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="modificationForm4">体重</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="weight" class="form-control" id="modificationForm4"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="modificationForm5">球龄</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="yearsexp" class="form-control" id="modificationForm5"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="modificationForm6">号码</label>
+                    <div class="col-sm-8">
+                        <input type="text" data-info="number" class="form-control" id="modificationForm6"
+                               aria-describedby="inputSuccess3Status">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="/static/main.js"></script>
+<script type="text/javascript" src="/static/dataPage.js"></script>
+
+<script>
+    var btn = $("#btn");
+    console.log(App.getPortName())
+    btn.on("click", function () {
+        $.ajax({
+            url: App.getPortName() + "/btn",
+            type: "get",
+            success: function (data) {
+                console.log(data)
+            }
+        })
+    })
+</script>
+</html>
