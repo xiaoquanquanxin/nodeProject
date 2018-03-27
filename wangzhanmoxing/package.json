@@ -1,7 +1,7 @@
 {
-  "name": "sunck",
-  "version": "1.0.0",
-  "description": "",
+  "name": "james",
+  "version": "1.5.1",
+  "description": "没啥",
   "main": "express.js",
   "dependencies": {},
   "devDependencies": {
@@ -11,7 +11,7 @@
     "multer": "^1.3.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC"

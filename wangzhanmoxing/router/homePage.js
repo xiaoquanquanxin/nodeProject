@@ -14,10 +14,16 @@ homePage.sendHomePage = function (req, res) {
 
 homePage.get("/index.html", homePage.sendHomePage);
 
-homePage.get("/btn", function (req, res) {
-    console.log("abd");
-    res.send("abc")
-});
+homePage.btn1 = function (req, res, next) {
+    console.log("第一步");
+    next()
+};
+homePage.btn2 = function (req, res) {
+    console.log("第二步")
+    console.log("对于同一个响应，一个header建立并发送后，不能建立另一个header");
+    res.send("天才第二步")
+};
+homePage.get("/btn", [homePage.btn1, homePage.btn2]);
 
 
 module.exports = homePage;

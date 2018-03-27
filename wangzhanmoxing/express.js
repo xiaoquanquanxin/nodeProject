@@ -139,7 +139,7 @@ app.post("/delete", function (req, res) {
     }
 });
 //  查一条数据接口
-app.get("/search/modification", function (req, res) {
+app.get("/search/modification", function (req, res)  {
     var arg = url.parse(req.url).query;
     var obj = urlGetParams(arg);
     var data = conversionDataType(obj);
