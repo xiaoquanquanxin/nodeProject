@@ -10,10 +10,14 @@
     <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.ttf">
     <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.woff">
     <link rel="stylesheet" href="/static/bootstrap/fonts/glyphicons-halflings-regular.woff2">
+    <link rel="stylesheet" href="/static/dataTables/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="/static/custom/css/header.css"/>
+
     <script type="text/javascript" src="/static/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="/static/layui-v2.2.5/layui/layui.all.js"></script>
-    <link rel="stylesheet" href="/static/custom/css/header.css"/>
+    <script type="text/javascript" src="/static/dataTables/js/jquery.dataTables.js"></script>
+
 </head>
 
 <body>
@@ -43,6 +47,19 @@
         </tr>
         </thead>
         <tbody>
+        </tbody>
+    </table>
+    <table id="example">
+        <thead>
+        <tr>
+            <th>1</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td>1</td>
+        </tr>
         </tbody>
     </table>
     <div class="btn-group" id="actionBtnList">
@@ -193,6 +210,13 @@
 <script type="text/javascript" src="/static/main.js"></script>
 <script type="text/javascript" src="/static/dataPage.js"></script>
 
+
+<!--初始化代码-->
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
 <script>
     var btn = $("#btn");
     console.log(App.getPortName())

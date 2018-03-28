@@ -186,6 +186,8 @@ $(document).ready(function () {
             tr.append($("<td>" + t.weight + "</td>"));
             tr.append($("<td>" + t.yearsexp + "</td>"));
             tr.append($("<td>" + t.number + "</td>"));
+            tr.attr("id",t.id);
+            tr.attr("title",t.id);
             tbody.append(tr)
         });
         caption.find("span").html(caption.data("html"));

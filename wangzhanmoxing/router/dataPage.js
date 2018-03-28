@@ -38,7 +38,7 @@ dataPage.get("/search", function (req, res) {
     var data = analyticP.conversionDataType(obj);
     console.log(data);
     MongoClient.connect(DB_CONN_STR, function (err, db) {
-        selectData(db, "teamList", data, function (result) {
+        selectData(db, "teamList", data, {limit:3,skip:3}, function (result) {
             if (result.length) {
                 // console.log(result[0]);
             }
@@ -59,7 +59,7 @@ dataPage.post("/add", function (req, res, next) {
     }
 }, function (req, res, next) {
     MongoClient.connect(DB_CONN_STR, function (err, db) {
-        selectData(db, "teamList", {}, function (result) {
+        selectData(db, "teamList", {},{}, function (result) {
             var id = result.length + 1;
             db.close();
             next(id);

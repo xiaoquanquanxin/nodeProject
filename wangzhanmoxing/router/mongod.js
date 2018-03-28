@@ -3,11 +3,19 @@ var mongod = express();
 
 
 //  查
-mongod.selectData = function (db, collectionName, where, callback) {
+mongod.selectData = function (db, collectionName, where, paging, callback) {
     //连接到集合
     var collection = db.collection(collectionName);
+    //  分页
+    paging.limit = paging.limit || 0;
+    if (paging.skip) {
+        paging.skip = (paging.skip - 1) * paging.limit;
+    } else {
+        paging.skip = 0;
+    }
+    paging.sort = paging.sort || {};
     //查询
-    collection.find(where).toArray(function (err, result) {
+    collection.find(where).limit(paging.limit).skip(paging.skip).sort(paging.sort).toArray(function (err, result) {
         if (!err) {
             //成功
             callback(result);
