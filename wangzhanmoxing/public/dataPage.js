@@ -64,13 +64,13 @@ $(document).ready(function () {
                     data: data,
                     success: function (data, status) {
                         console.log(data, status);
-                        if (status === "success") {
-                            layer.msg("添加成功", {time: 1000});
-                            renderData(data);
-                            layer.close(index);
-                        } else {
+                        //if (status === "success") {
+                        //    layer.msg("添加成功", {time: 1000});
+                        //    renderData(data);
+                        //    layer.close(index);
+                        //} else {
                             layer.msg(data.msg, {time: 1000, anim: 6});
-                        }
+                        //}
                     }
                 })
             },

@@ -37,7 +37,7 @@ dataPage.get("/search", function (req, res) {
     var data = analyticP.conversionDataType(obj);
     console.log(data);
     MongoClient.connect(DB_CONN_STR, function (err, db) {
-        selectData(db, "teamList", data, {limit:3,skip:3}, function (result) {
+        selectData(db, "teamList", data, {limit: 3, skip: 3}, function (result) {
             if (result.length) {
                 // console.log(result[0]);
             }
@@ -47,7 +47,7 @@ dataPage.get("/search", function (req, res) {
     });
 });
 //  添加一个人接口
-dataPage.post("/add", function (req, res, next) {
+var r3 = express().post("/add", function (req, res, next) {
     // console.log(  req.body);
     if (req.body.name === "") {
         res.send(analyticP.returnRequestError("球员姓名不能为空"));
@@ -58,7 +58,7 @@ dataPage.post("/add", function (req, res, next) {
     }
 }, function (req, res, next) {
     MongoClient.connect(DB_CONN_STR, function (err, db) {
-        selectData(db, "teamList", {},{}, function (result) {
+        selectData(db, "teamList", {}, {}, function (result) {
             var id = result.length + 1;
             db.close();
             next(id);
@@ -87,4 +87,19 @@ dataPage.post("/add", function (req, res, next) {
         });
     });
 });
+
+var r1 = express.Router();
+r1.post('/add', function (req, res, next) {
+    console.log("r1");
+    console.log(req.baseUrl);
+    next();
+})
+
+var r2 = express.Router();
+r2.post('/add', function (req, res, next) {
+    console.log("r2")
+    next();
+})
+
+dataPage.use(r1, r2,r3);
 module.exports = dataPage;
