@@ -11,7 +11,6 @@ dataPage.sendDataPage = function (req, res) {
     res.sendfile(appIndex + "dataPage.html");
     // console.log("正确的dataPage.html");
 };
-
 dataPage.get("/dataPage.html", dataPage.sendDataPage);
 
 dataPage.get("/btn", function (req, res) {

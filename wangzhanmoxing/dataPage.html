@@ -21,11 +21,16 @@
     <style>
         #example {
             display: none;
-
         }
 
         .table.dataTable.order-column tbody tr > .sorting_1, table.dataTable.order-column tbody tr > .sorting_2, table.dataTable.order-column tbody tr > .sorting_3, table.dataTable.display tbody tr > .sorting_1, table.dataTable.display tbody tr > .sorting_2, table.dataTable.display tbody tr > .sorting_3 {
             background-color: rgba(18, 152, 0, 0.09);
+        }
+
+        @media screen and (max-width: 767px) {
+            div.dataTables_wrapper div.dataTables_length, div.dataTables_wrapper div.dataTables_filter, div.dataTables_wrapper div.dataTables_info, div.dataTables_wrapper div.dataTables_paginate {
+                text-align: left;
+            }
         }
     </style>
 </head>
@@ -48,12 +53,12 @@
         </caption>
         <thead>
         <tr>
-            <th>位置</th>
-            <th>姓名</th>
-            <th>身高<span class="badge">cm</span></th>
-            <th>体重<span class="badge">bls</span></th>
-            <th>球龄<span class="badge">years</span></th>
-            <th>号码</th>
+            <!--<th>位置</th>-->
+            <!--<th>姓名</th>-->
+            <!--<th>身高<span class="badge">cm</span></th>-->
+            <!--<th>体重<span class="badge">bls</span></th>-->
+            <!--<th>球龄<span class="badge">years</span></th>-->
+            <!--<th>号码</th>-->
         </tr>
         </thead>
         <tbody>
@@ -62,30 +67,29 @@
     <table id="example" class="table table-striped order-column table-bordered table-hover table-responsive ">
         <thead>
         <tr>
-            <th>位置</th>
-            <th>姓名</th>
-            <th>身高<span class="badge">cm</span></th>
-            <th>体重<span class="badge">bls</span></th>
-            <th>球龄<span class="badge">years</span></th>
-            <th>号码</th>
+            <th>A</th>
+            <th>B</th>
+            <th class="hidden-xs">C<span class="badge">cm</span></th>
+            <th class="hidden-xs">D<span class="badge">bls</span></th>
+            <th>E<span class="badge">years</span></th>
+            <th>F</th>
         </tr>
         </thead>
         <tbody id="tbody">
         <tr>
             <td>(1)*(1)</td>
             <td>(2)*(2)</td>
-            <td>(3)*(3)</td>
-            <td>(4)*(4)</td>
+            <td class="hidden-xs">(3)*(3)</td>
+            <td class="hidden-xs">(4)*(4)</td>
             <td>(5)*(5)</td>
             <td>(6)*(6)</td>
-
         </tr>
         </tbody>
 
         <script>
             var tbody = $("#tbody");
             var str = "";
-            for (var i = 0; i < 31; i++) {
+            for (var i = 0; i < 400; i++) {
 //                (i < 10 ? "0" + i : i)
                 str += "<tr><td data-info='" + i + "'>" + i + "</td><td data-info='" + i + "'>" + i + "</td><td>" + i + "</td><td>" + i + ")*(4)</td><td>(" + i + ")*(5)</td><td>(" + i + ")*(6)</td></tr>"
             }
@@ -237,6 +241,7 @@
     </div>
 </div>
 
+
 </body>
 <script type="text/javascript" src="/static/main.js"></script>
 <script type="text/javascript" src="/static/dataPage.js"></script>
@@ -245,6 +250,15 @@
 <!--初始化代码-->
 <script>
     $(document).ready(function () {
+        hiddenXs();
+        function hiddenXs() {
+            $("#tbody").find("tr").each(function (t, index) {
+                var td = $(this).find("td");
+                td.eq(2).addClass("hidden-xs");
+                td.eq(3).addClass("hidden-xs");
+            });
+        }
+
         //  排序
         jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "html-percent-pre": function (a) {
@@ -262,11 +276,12 @@
                 return ((a < b) ? 1 : ((a > b) ? -1 : 0));
             }
         });
-        var table = $('#example').DataTable({
+        var table = $('#example');
+        var tDateTable = table.DataTable({
             pagingType: "full_numbers",     //分页样式
-            scrollY: 308,                   //垂直滚动条
+            scrollY: Math.min(308, $(document).height() /2 - 50),                   //垂直滚动条
             scrollCollapse: false,          //滚动条随数据条数变化
-            stateSave: true,                //保存当前状态
+//            stateSave: true,                //保存当前状态
             aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],   //  显示数量
             language: {
                 "sProcessing": "处理中...",
@@ -296,20 +311,19 @@
                 {"sType": "html-percent", "aTargets": [0]},    //指定列号使用自定义排序
             ],
         });
-//        $("#example_wrapper").slideDown("slow");
-//        $("#example").show("slow");
-//        $('#example_wrapper').animate().css({"visibility":"visible"});
-        $('#example').fadeIn()
-        $(".dataTables_scrollHeadInner")
-//            .animate({width: "100%"}, "slow")
-//            .css({"padding-right": "17px", "box-sizing": "border-box"})
-//            .find("table")
-//            .animate({width: "100%"}, "slow");
-        $(window).on("resize", function () {
-            table.draw(false)
-        })
-    });
+        table.fadeIn();
 
+        paginateHiddenXs();
+        function paginateHiddenXs() {
+            $(".paginate_button.first").addClass("hidden-xs");
+            $(".paginate_button.last").addClass("hidden-xs");
+        }
+
+        $(window).on("resize", function () {
+            tDateTable.draw(false);
+        });
+        tDateTable.on("draw", paginateHiddenXs);
+    });
 </script>
 <script>
     var btn = $("#btn");
