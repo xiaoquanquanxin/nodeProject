@@ -16,6 +16,7 @@ $(document).ready(function () {
                     type: "get",
                     success: function (data, status) {
                         if (status === "success") {
+                            console.log(data)
                             renderData(data);
                             layer.close(index);
                         }
@@ -28,7 +29,7 @@ $(document).ready(function () {
         })
     });
 
-    var teamTable = $("#teamTable");
+    var example = $("#example");
     var btnGroup = $("#actionBtnList");
     btnGroup.add = $("button#add");
     btnGroup.del = $("button#del");
@@ -69,7 +70,7 @@ $(document).ready(function () {
                         //    renderData(data);
                         //    layer.close(index);
                         //} else {
-                            layer.msg(data.msg, {time: 1000, anim: 6});
+                        layer.msg(data.msg, {time: 1000, anim: 6});
                         //}
                     }
                 })
@@ -159,7 +160,7 @@ $(document).ready(function () {
             layer.msg("请选中数据", {time: 1000, anim: 6});
         }
     });
-    teamTable.on("mouseenter", "tbody>tr", function () {
+    example.on("mouseenter", "tbody>tr", function () {
         $(this).addClass("success").siblings().removeClass("success");
     }).on("mouseleave", function () {
         $(this).find("tr").removeClass("success");
@@ -170,7 +171,28 @@ $(document).ready(function () {
     });
 
     function renderData(data) {
-        var tbody = teamTable.find("tbody");
+        // debugger
+        //  排序
+        jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "html-percent-pre": function (a) {
+                var x = String(a).replace(/<[\s\S]*?>/g, "");    //去除html标记
+                x = x.replace(/&amp;nbsp;/ig, "");                   //去除空格
+                x = x.replace(/%/, "");                          //去除百分号
+                return parseFloat(x);
+            },
+
+            "html-percent-asc": function (a, b) {                //正序排序引用方法
+                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+            },
+
+            "html-percent-desc": function (a, b) {                //倒序排序引用方法
+                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+            }
+        });
+        if (tDateTable) {
+            tDateTable.destroy();
+        }
+        var tbody = example.find("tbody");
         tbody.html("");
         data.forEach(function (t, index) {
             var tr = $("<tr></tr>");
@@ -186,10 +208,68 @@ $(document).ready(function () {
             tr.append($("<td>" + t.weight + "</td>"));
             tr.append($("<td>" + t.yearsexp + "</td>"));
             tr.append($("<td>" + t.number + "</td>"));
-            tr.attr("id",t.id);
-            tr.attr("title",t.id);
+            tr.attr("id", t.id);
+            tr.attr("title", t.id);
             tbody.append(tr)
         });
         caption.find("span").html(caption.data("html"));
+        tDateTable = table.DataTable({
+            pagingType: "full_numbers",     //分页样式
+            scrollY: Math.min(308, $(document).height() / 2 - 50),                   //垂直滚动条
+            scrollCollapse: false,          //滚动条随数据条数变化
+//            stateSave: true,                //保存当前状态
+            aLengthMenu: [[10, 25, 50, -1], [10, 25, 50, "全部"]],   //  显示数量
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            "aoColumnDefs": [
+                {"sType": "html-percent", "aTargets": [0]},    //指定列号使用自定义排序
+            ],
+        });
+        hiddenXs();
+        paginateHiddenXs()
+    }
+
+    $(window).on("resize", function () {
+        tDateTable.draw(false);tDateTable.on("draw", paginateHiddenXs);
+    });
+    // renderData([]);
+    paginateHiddenXs();
+
+    function paginateHiddenXs() {
+        $(".paginate_button.first").addClass("hidden-xs");
+        $(".paginate_button.last").addClass("hidden-xs");
+    }
+
+    function hiddenXs() {
+        $("#tbody").find("tr").each(function (t, index) {
+            var td = $(this).find("td");
+            td.eq(2).addClass("hidden-xs");
+            td.eq(3).addClass("hidden-xs");
+        });
     }
 });
+var table = $('#example');
+
+var tDateTable;

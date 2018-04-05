@@ -35,9 +35,13 @@ dataPage.get("/search", function (req, res) {
     var arg = url.parse(req.url).query;
     var obj = analyticP.urlGetParams(arg);
     var data = analyticP.conversionDataType(obj);
-    console.log(data);
+    console.log("查询", data,data.teamId );
+    if( data.teamId === 0 ){
+        data = {};
+    }
     MongoClient.connect(DB_CONN_STR, function (err, db) {
-        selectData(db, "teamList", data, {limit: 3, skip: 3}, function (result) {
+        //{limit: 3, skip: 3}
+        selectData(db, "teamList", data, {}, function (result) {
             if (result.length) {
                 // console.log(result[0]);
             }
@@ -101,5 +105,5 @@ r2.post('/add', function (req, res, next) {
     next();
 })
 
-dataPage.use(r1, r2,r3);
+dataPage.use(r1, r2, r3);
 module.exports = dataPage;
